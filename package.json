@@ -31,6 +31,7 @@
     "solidity-coverage": "^0.8.2"
   },
   "dependencies": {
-    "@divergencetech/ethier": "^0.51.0"
+    "@divergencetech/ethier": "^0.51.0",
+    "dotenv": "^16.0.3"
   }
 }

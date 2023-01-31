@@ -2,6 +2,7 @@
 // yours, or create new ones.
 
 const path = require("path");
+const astrochain_args = require("../astrochain_arguments.json")
 
 async function main() {
   // This is just a convenience check
@@ -22,17 +23,17 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const Token = await ethers.getContractFactory("Token");
-  const token = await Token.deploy();
-  await token.deployed();
+  const Astrochain = await ethers.getContractFactory("Astrochain");
+  const astrochain = await Astrochain.deploy(astrochain_args[0], astrochain_args[1]);
+  await astrochain.deployed();
 
-  console.log("Token address:", token.address);
+  console.log("Astrochain address:", astrochain.address);
 
   // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(token);
+  saveFrontendFiles(astrochain);
 }
 
-function saveFrontendFiles(token) {
+function saveFrontendFiles(astrochain) {
   const fs = require("fs");
   const contractsDir = path.join(__dirname, "..", "frontend", "src", "contracts");
 
@@ -42,14 +43,14 @@ function saveFrontendFiles(token) {
 
   fs.writeFileSync(
     path.join(contractsDir, "contract-address.json"),
-    JSON.stringify({ Token: token.address }, undefined, 2)
+    JSON.stringify({ Astrochain: astrochain.address }, undefined, 2)
   );
 
-  const TokenArtifact = artifacts.readArtifactSync("Token");
+  const AstrochainArtifact = artifacts.readArtifactSync("Astrochain");
 
   fs.writeFileSync(
-    path.join(contractsDir, "Token.json"),
-    JSON.stringify(TokenArtifact, null, 2)
+    path.join(contractsDir, "Astrochain.json"),
+    JSON.stringify(AstrochainArtifact, null, 2)
   );
 }
 
