@@ -45,10 +45,6 @@ contract Astrochain is ERC1155, IERC2981, AccessControl, Pausable {
         symbol = _symbol;
     }
 
-    function setURI(string memory newuri) public onlyRole(ADMIN_ROLE) {
-        _setURI(newuri);
-    }
-
     function pause() public onlyRole(PAUSER_ROLE) {
         _pause();
     }
@@ -237,7 +233,7 @@ contract Astrochain is ERC1155, IERC2981, AccessControl, Pausable {
     /** @dev URI override for OpenSea traits compatibility. */
     function uri(uint256 tokenId) override public view returns (string memory) {
         // Tokens minted above the supply cap will not have associated metadata.
-        require(tokenId <= _tokenIds.current(), "ERC1155Metadata: URI query for nonexistent token");
+        require(tokenId <= _tokenIds.current() - 1, "ERC1155Metadata: URI query for nonexistent token");
         return string(abi.encodePacked(ERC1155.uri(tokenId), Strings.toString(tokenId), ".json"));
     }
 
